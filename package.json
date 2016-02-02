@@ -1,7 +1,7 @@
 {
-  "name": "ndcoslo2015",
+  "name": "ORMHyperToDo",
   "version": "1.0.0",
-  "description": "NDC Oslo 2015 code samples for mamund's talk",
+  "description": "Hypermedia ToDo Service & Client for 2016-02 ORM Tutorial",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
@@ -14,17 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/apiacademy/ndcoslo2015.git"
+    "url": "https://github.com/apiacademy/hyper-todo.git"
   },
   "keywords": [
     "hypermedia",
     "amundsen",
     "HAL",
     "Cj",
-    "Siren",
-    "UBER",
-    "NDC",
-    "Oslo"
+    "ORM",
+    "O'Reilly"
   ],
   "license": "MIT"
 }
