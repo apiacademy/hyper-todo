@@ -12,6 +12,7 @@ var fs = require('fs');
 var qs = require('querystring');
 var folder = process.cwd() + '/files/';
 
+// return disk file (*synchronously*)
 exports.file = function(req, res, parts, respond) {
   var body, doc, type;
 
@@ -71,6 +72,7 @@ function cjBody(body) {
   return rtn;
 }
 
+// general parseboby routine
 exports.parseBody = function(body, ctype) {
   var msg;
   
@@ -101,6 +103,7 @@ function getQArgs(req) {
   return qlist;
 }
 
+// craft an error response
 exports.errorResponse = function(req, res, msg, code, description) {
   var doc;
 
@@ -119,7 +122,7 @@ exports.errorResponse = function(req, res, msg, code, description) {
   };
 }
 
-
+// craft an internal exception 
 exports.exception = function(name, message, code) {
   var rtn = {};
 

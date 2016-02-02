@@ -12,6 +12,7 @@ var utils = require('./connectors/utils.js');
 
 module.exports = main;
 
+// provides simple *synchronous* disk file 
 function main(object, action, arg1, arg2, arg3) {
   var rtn;
 

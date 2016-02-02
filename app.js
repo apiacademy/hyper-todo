@@ -68,6 +68,7 @@ function handler(req, res) {
   }
 
   // file handler
+  flg=false;
   try {
     if(flg===false && reFile.test(req.url)) {
       flg = true;
@@ -77,7 +78,7 @@ function handler(req, res) {
   catch(ex) {}
   
   // home handler
-  if(reHome.test(req.url)) {
+  if(flg===false && reHome.test(req.url)) {
     flg = true;
     doc = home(req, res, parts, handleResponse);
   }
