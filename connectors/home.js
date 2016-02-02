@@ -14,7 +14,6 @@ var root = '';
 var props =  ["id","title","completed"];
 
 var qs = require('querystring');
-//var map = require('./../maps.js');
 var utils = require('./utils.js');
 var components = require('./../components.js');
 var transitions = require('./../transitions.js');
@@ -24,10 +23,12 @@ module.exports = main;
 function main(req, res, parts, respond) {
   var sw;
 
+  // peek first URL arg
+  sw = parts[0]||"*";
+
   switch (req.method) {
   case 'GET':
-    sw = parts[0]||"*";
-    switch(sw[0]) {
+    switch(sw) {
       case '?':
         sendList(req, res, respond, utils.getQArgs(req));
         break;
@@ -40,13 +41,28 @@ function main(req, res, parts, respond) {
     }
     break;
   case 'POST':
-    addItem(req, res, respond);
+    if(sw==="*") {
+      addItem(req, res, respond);
+    }
+    else {
+      respond(req, res, utils.errorResponse(req, res, 'Method Not Allowed', 405));
+    }
     break;
   case 'PUT':
-    updateItem(req, res, parts[0], respond);
+    if(sw!=="*") {
+      updateItem(req, res, respond, parts[0]);
+    }
+    else {
+      respond(req, res, utils.errorResponse(req, res, 'Method Not Allowed', 405));
+    }
     break;
   case 'DELETE':
-    removeItem(req, res, parts[0], respond);
+    if(sw!=="*") {
+      removeItem(req, res, respond, parts[0]);
+    }
+    else {
+      respond(req, res, utils.errorResponse(req, res, 'Method Not Allowed', 405));
+    }
     break;
   default:
     respond(req, res, utils.errorResponse(req, res, 'Method Not Allowed', 405));
@@ -55,80 +71,95 @@ function main(req, res, parts, respond) {
 }
 
 function addItem(req, res, respond) {
-  var body, doc, msg, ctype, item;
+  var body, doc, msg;
 
-  ctype = '';
   body = '';
-  req.on('data', function(chunk) {
-    body += chunk;
-  });
-
-  req.on('end', function() {
-    try {
-      msg = utils.parseBody(body, req.headers["content-type"]);
-      item = validateItem(msg, props);      
-      if (item.title === "") {
-        doc = utils.errorResponse(req, res, "Missing Title", 400);
-      } else {
-        components.todo('add', item);
-      }
-    } catch (ex) {
-      doc = utils.errorResponse(req, res, 'Server Error', 500);
-    }
-
-    if (!doc) {
-      sendList(req, res, respond, "");
-    } else {
-      respond(req, res, doc);
-    }
-  });
-}
-
-function updateItem(req, res, id, respond) {
-  var body, doc, msg, ctype, item;
-
-  ctype = '';
-  body = '';
-  req.on('data', function(chunk) {
-    body += chunk;
-  });
-
-  req.on('end', function() {
-    try {
-      msg = utils.parseBody(body, req.headers["content-type"]);
-      item = validateItem(msg, props);
-      item.id = id;      
-      if (item.title === "") {
-        doc = utils.errorResponse(req, res, "Missing Title", 400);
-      } else {
-        components.todo('update', id, item);
-      }
-    } catch (ex) {
-      doc = utils.errorResponse(req, res, 'Server Error', 500);
-    }
-
-    if (!doc) {
-      sendList(req, res, respond, "");
-    } else {
-      respond(req, res, doc);
-    }
-  });
-}
-
-function removeItem(req, res, id, respond) {
-  var list, doc;
   
-  item = components.todo('read', id);
-  if(item===null) {
-    doc = utils.errorResponse(req, res, "File Not Found", 404);
-  }
-  else {
-    list = components.todo('remove', id);
+  // collect body
+  req.on('data', function(chunk) {
+    body += chunk;
+  });
+
+  // process body
+  req.on('end', function() {
+    try {
+      msg = utils.parseBody(body, req.headers["content-type"]);
+      doc = components.todo('add', msg);
+      if(doc && doc.type==='error') {
+        doc = utils.errorResponse(req, res, doc.message, doc.code);
+      }
+    } 
+    catch (ex) {
+      doc = utils.errorResponse(req, res, 'Server Error', 500);
+    }
+
+    if (!doc) {
+      respond(req, res, {code:303, doc:"", 
+        headers:{'location':'//'+req.headers.host+"/"}
+      });
+    } 
+    else {
+      respond(req, res, doc);
+    }
+  });
+}
+
+// handle update operation
+function updateItem(req, res, respond, id) {
+  var body, doc, msg;
+
+  body = '';
+  
+  // collect body
+  req.on('data', function(chunk) {
+    body += chunk;
+  });
+
+  // process body
+  req.on('end', function() {
+    try {
+      msg = utils.parseBody(body, req.headers["content-type"]);
+      doc = components.todo('update', id, msg);
+      if(doc && doc.type==='error') {
+        doc = utils.errorResponse(req, res, doc.message, doc.code);
+      }
+    } 
+    catch (ex) {
+      doc = utils.errorResponse(req, res, 'Server Error', 500);
+    }
+
+    if (!doc) {
+      respond(req, res, 
+        {code:303, doc:"", headers:{'location':'//'+req.headers.host+"/"}}
+      );
+    } 
+    else {
+      respond(req, res, doc);
+    }
+  })
+}
+
+// handle remove operation (no body)
+function removeItem(req, res, respond, id) {
+  var doc;
+  
+  // execute
+  try {
+    doc = components.todo('remove', id);
+    if(doc && doc.type==='error') {
+      doc = utils.errorResponse(req, res, doc.message, doc.code);    
+    }
+  } 
+  catch (ex) {
+    doc = utils.errorResponse(req, res, 'Server Error', 500);
   }
   
   if (!doc) {
-    sendList(req, res, respond, "");
-  } else {
+    respond(req, res, 
+      {code:303, doc:"", headers:{'location':'//'+req.headers.host+"/"}}
+    );
+  } 
+  else {
     respond(req, res, doc);
   }
 }
@@ -206,7 +237,7 @@ function sendItem(req, res, id, respond) {
   root = '//'+req.headers.host;
 
   list = components.todo('read', id);
-  if (Array.isArray(list) && list[0] === null) {
+  if (!list || (Array.isArray(list) && list.length===0)) {
     rtn = utils.errorResponse(req, res, 'File Not Found', 404);
   }
   else {
@@ -282,22 +313,6 @@ function parseItem(item, props, root) {
   }
   return rtn;
 }
-
-// check inputs
-function validateItem(msg, props) {
-  var item, i, x;
-  
-  item = {};
-  for(i=0,x=props.length;i<x;i++) {
-    item[props[i]] = msg[props[i]];
-  }
-  
-  if(!item.completeFlag) {
-    item.completeFlag = "false";
-  }
-  return item;
-}
-
 
 // EOF
 

@@ -9,8 +9,8 @@
 // handles internal representation routing (based on conneg)
 
 // load representors
-var json = require('./representors/json.js');
 var cj = require('./representors/cj.js');
+var json = require('./representors/json.js');
 var repjson = require('./representors/repjson.js');
 
 module.exports = main;
