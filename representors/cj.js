@@ -79,7 +79,11 @@ function getItems(obj, root) {
       data = [];
       for(var d in temp) {
         if(d!=="meta") {
-          data.push({name : d, value : temp[d], prompt : d});
+          data.push({
+            name : d, 
+            value : temp[d], 
+            prompt : d
+          });
           tvars[d] = temp[d];
         }
       }
@@ -112,7 +116,11 @@ function getQueries(obj) {
         data = [];
         for(j=0,y=query.inputs.length;j<y;j++) {
           d = query.inputs[j];
-          data.push({name:d.name||"input"+j,value:d.value||"",prompt:d.prompt||d.name})
+          data.push({
+            name:d.name||"input"+j,
+            value:d.value||"",
+            prompt:d.prompt||d.name
+          });
         }
         q.data = data;
         rtn.push(q);
@@ -136,7 +144,11 @@ function getTemplate(obj) {
         rtn.rel = temp.rel.join(" ");
         for(j=0,y=temp.inputs.length;j<y;j++) {
           d = temp.inputs[j];
-          data.push({name:d.name||"input"+j,value:d.value||"",prompt:d.prompt||d.name});
+          data.push({
+            name:d.name||"input"+j,
+            value:d.value||"",
+            prompt:d.prompt||d.name
+          });
         }
       }
     }
