@@ -111,10 +111,8 @@ exports.errorResponse = function(req, res, msg, code, description) {
   doc.error = {};
   doc.error.code = code;
   doc.error.message = msg;
+  doc.error.description = description||msg;
   doc.error.url = 'http://' + req.headers.host + req.url;
-  if (description) {
-    doc.error.description = description;
-  }
 
   return {
     code: code,

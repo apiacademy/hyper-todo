@@ -80,9 +80,9 @@ function getItems(obj, root) {
       for(var d in temp) {
         if(d!=="meta") {
           data.push({
-            name : d, 
-            value : temp[d], 
-            prompt : d
+            name:d, 
+            value:temp[d], 
+            prompt:d
           });
           tvars[d] = temp[d];
         }
@@ -161,7 +161,7 @@ function getError(obj) {
   var rtn = {};
 
   rtn.title = "Error";
-  rtn.message = (obj.title||"");
+  rtn.message = (obj.message||(obj.title||""));
   rtn.code = (obj.code||"");
   rtn.url = (obj.url||"");
   
