@@ -28,7 +28,7 @@ function main(req, res, parts, respond) {
 
   switch (req.method) {
   case 'GET':
-    switch(sw) {
+    switch(sw[0]) {
       case '?':
         sendList(req, res, respond, utils.getQArgs(req));
         break;
@@ -41,7 +41,7 @@ function main(req, res, parts, respond) {
     }
     break;
   case 'POST':
-    if(sw==="*") {
+    if(sw[0]==="*") {
       addItem(req, res, respond);
     }
     else {
@@ -49,7 +49,7 @@ function main(req, res, parts, respond) {
     }
     break;
   case 'PUT':
-    if(sw!=="*") {
+    if(sw[0]!=="*") {
       updateItem(req, res, respond, parts[0]);
     }
     else {
@@ -57,7 +57,7 @@ function main(req, res, parts, respond) {
     }
     break;
   case 'DELETE':
-    if(sw!=="*") {
+    if(sw[0]!=="*") {
       removeItem(req, res, respond, parts[0]);
     }
     else {
