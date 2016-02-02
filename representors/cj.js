@@ -23,7 +23,7 @@ function cj(object, root) {
     rtn.collection.title = getTitle(object[o]);
     rtn.collection.links = getLinks(object[o].actions);
     rtn.collection.items = getItems(object[o],root);
-    rtn.collection.queries = getQueries(object[o].actions);
+    rtn.collection.queries = []; getQueries(object[o].actions);
     rtn.collection.template = getTemplate(object[o].actions);
   
     if(object.error) {
