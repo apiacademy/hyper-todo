@@ -84,7 +84,7 @@ function addItem(req, res, respond) {
   req.on('end', function() {
     try {
       msg = utils.parseBody(body, req.headers["content-type"]);
-      doc = components.todo('add', msg);
+      doc = components.task('add', msg);
       if(doc && doc.type==='error') {
         doc = utils.errorResponse(req, res, doc.message, doc.code);
       }
@@ -119,7 +119,7 @@ function updateItem(req, res, respond, id) {
   req.on('end', function() {
     try {
       msg = utils.parseBody(body, req.headers["content-type"]);
-      doc = components.todo('update', id, msg);
+      doc = components.task('update', id, msg);
       if(doc && doc.type==='error') {
         doc = utils.errorResponse(req, res, doc.message, doc.code);
       }
@@ -145,7 +145,7 @@ function removeItem(req, res, respond, id) {
   
   // execute
   try {
-    doc = components.todo('remove', id);
+    doc = components.task('remove', id);
     if(doc && doc.type==='error') {
       doc = utils.errorResponse(req, res, doc.message, doc.code);    
     }
@@ -171,10 +171,10 @@ function sendList(req, res, respond, filter) {
   
   // get data
   if(filter) {
-    list = components.todo('filter',filter);
+    list = components.task('filter',filter);
   }
   else {
-    list = components.todo('list');
+    list = components.task('list');
   }
   
   // update items (fields & links)
@@ -218,7 +218,7 @@ function sendList(req, res, respond, filter) {
   
   // compose graph 
   doc = {};
-  doc.title = "ToDo";
+  doc.title = "task";
   doc.actions = coll;
   doc.data =  items;
 
@@ -226,7 +226,7 @@ function sendList(req, res, respond, filter) {
   respond(req, res, {
     code: 200,
     doc: {
-      todo: doc
+      task: doc
     }
   });
 }
@@ -236,7 +236,7 @@ function sendItem(req, res, id, respond) {
 
   root = '//'+req.headers.host;
 
-  list = components.todo('read', id);
+  list = components.task('read', id);
   if (!list || (Array.isArray(list) && list.length===0)) {
     rtn = utils.errorResponse(req, res, 'File Not Found', 404);
   }
@@ -286,13 +286,13 @@ function sendItem(req, res, id, respond) {
   
     // compose graph
     doc = {};
-    doc.title = "ToDo";
+    doc.title = "task";
     doc.actions = coll;
     doc.data = items;
     rtn = {
       code: 200,
       doc: {
-        todo: doc
+        task: doc
       }
     }
   }

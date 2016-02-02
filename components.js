@@ -12,13 +12,13 @@
 var storage = require('./storage.js');
 
 // handle task/todo business objects
-exports.todo = function(action, args1, args2, args3) {
+exports.task = function(action, args1, args2, args3) {
   var object, props, rtn;
 
   // valid fields for this record   
   props = ["id","title","completed","dateCreated","dateUpdated"];
 
-  object = 'todo';
+  object = 'task';
   rtn = null;
 
   switch (action) {

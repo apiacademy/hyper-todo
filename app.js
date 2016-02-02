@@ -77,7 +77,7 @@ function handler(req, res) {
   }
   catch(ex) {}
   
-  // home handler
+  // task handler
   if(flg===false && reHome.test(req.url)) {
     flg = true;
     doc = home(req, res, parts, handleResponse);

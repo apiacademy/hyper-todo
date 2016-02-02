@@ -38,17 +38,17 @@ function fillTrans() {
     name : "searchLink",
     type : "safe",
     action: "read",
-    kind : "todo",
+    kind : "task",
     target : "list",
-    prompt : "Search ToDos"
+    prompt : "Search tasks"
   });
   trans.push({
     name : "searchForm",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "list",
-    prompt : "Search ToDos",
+    prompt : "Search tasks",
     inputs : [
       {name : "title", prompt : "Title", value : ""}
     ]
@@ -74,22 +74,22 @@ function fillTrans() {
     prompt : "Home"
   });
   
-  // todo transitions
+  // task transitions
   trans.push({
     name : "listAll",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "list",
-    prompt : "All ToDo"
+    prompt : "All task"
   });
   trans.push({
     name : "listActive",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "list",
-    prompt : "Active ToDos",
+    prompt : "Active tasks",
     inputs : [
       {name : "completed", prompt : "Complete", value : "false"}
     ]
@@ -98,9 +98,9 @@ function fillTrans() {
     name : "listCompleted",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "list",
-    prompt : "Completed ToDos",
+    prompt : "Completed tasks",
     inputs : [
       {name : "completed", prompt : "Complete", value : "true"}
     ]
@@ -110,17 +110,17 @@ function fillTrans() {
     name : "addLink",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "list",
-    prompt : "Add ToDo"
+    prompt : "Add task"
   });
   trans.push({
     name : "addForm",
     type : "unsafe",
     action : "append",
-    kind : "todo",
+    kind : "task",
     target : "list",
-    prompt : "Add ToDo",
+    prompt : "Add task",
     inputs : [
       {name : "title", prompt : "Title"},
       {name : "completed", prompt : "Complete", value : "false"}
@@ -131,16 +131,16 @@ function fillTrans() {
     name : "editLink",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "item",
-    prompt : "Edit ToDo"
+    prompt : "Edit task"
   });
   trans.push({
     name : "editForm",
     type : "unsafe",
     action : "replace",
-    kind : "todo",
-    prompt : "Edit ToDo",
+    kind : "task",
+    prompt : "Edit task",
     inputs : [
       {name : "id", prompt : "ID"},
       {name : "title", prompt : "Title"},
@@ -152,16 +152,16 @@ function fillTrans() {
     name : "removeLink",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "item",
-    prompt : "Remove ToDo"
+    prompt : "Remove task"
   });
   trans.push({
     name : "removeForm",
     type : "unsafe",
     action : "remove",
-    kind : "todo",
-    prompt : "Remove ToDo",
+    kind : "task",
+    prompt : "Remove task",
     inputs : [
       {name : "id", prompt : "ID"}
     ]
@@ -171,7 +171,7 @@ function fillTrans() {
     name : "completedLink",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "item",
     prompt : "Mark Completed"
   });
@@ -179,7 +179,7 @@ function fillTrans() {
     name : "completedForm",
     type : "unsafe",
     action : "append",
-    kind : "todo",
+    kind : "task",
     prompt : "Mark Completed",
     inputs : [
       {name: "id", prompt:"ID"},
@@ -191,7 +191,7 @@ function fillTrans() {
     name : "clearCompletedLink",
     type : "safe",
     action : "read",
-    kind : "todo",
+    kind : "task",
     target : "list",
     prompt : "Clear Completed"
   });
@@ -199,7 +199,7 @@ function fillTrans() {
     name : "clearCompletedForm",
     type : "unsafe",
     action : "append",
-    kind : "todo",
+    kind : "task",
     target : "list",
     prompt : "Clear Completed",
     inputs : [
