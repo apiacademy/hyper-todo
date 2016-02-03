@@ -14,10 +14,8 @@ var querystring = require('querystring');
 
 /// internal modules
 var representation = require('./representor.js');
-
-// connector modules
-var home = require('./connectors/home.js');
-var utils = require('./connectors/utils.js');
+var resources = require('./resources/task.js');
+var utils = require('./utils.js');
 
 // shared vars
 var root = '';
@@ -30,7 +28,7 @@ var csAccept = '';
 
 // routing rules
 var reFile = new RegExp('^\/files\/.*','i');
-var reHome = new RegExp('^\/.*','i');
+var reTask = new RegExp('^\/.*','i');
 
 // request handler
 function handler(req, res) {
@@ -78,9 +76,9 @@ function handler(req, res) {
   catch(ex) {}
   
   // task handler
-  if(flg===false && reHome.test(req.url)) {
+  if(flg===false && reTask.test(req.url)) {
     flg = true;
-    doc = home(req, res, parts, handleResponse);
+    doc = resources(req, res, parts, handleResponse);
   }
   
   // final error

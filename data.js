@@ -8,7 +8,7 @@
 
 var fs = require('fs');
 var folder = process.cwd() + '/data/';
-var utils = require('./connectors/utils.js');
+var utils = require('./utils.js');
 
 module.exports = main;
 

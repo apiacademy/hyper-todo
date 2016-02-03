@@ -14,8 +14,8 @@ var root = '';
 var props =  ["id","title","completed"];
 
 var qs = require('querystring');
-var utils = require('./utils.js');
-var components = require('./../components.js');
+var utils = require('./../utils.js');
+var objects = require('./../objects.js');
 var transitions = require('./../transitions.js');
 
 module.exports = main;
@@ -84,7 +84,7 @@ function addItem(req, res, respond) {
   req.on('end', function() {
     try {
       msg = utils.parseBody(body, req.headers["content-type"]);
-      doc = components.task('add', msg);
+      doc = objects.task('add', msg);
       if(doc && doc.type==='error') {
         doc = utils.errorResponse(req, res, doc.message, doc.code);
       }
@@ -119,7 +119,7 @@ function updateItem(req, res, respond, id) {
   req.on('end', function() {
     try {
       msg = utils.parseBody(body, req.headers["content-type"]);
-      doc = components.task('update', id, msg);
+      doc = objects.task('update', id, msg);
       if(doc && doc.type==='error') {
         doc = utils.errorResponse(req, res, doc.message, doc.code);
       }
@@ -145,7 +145,7 @@ function removeItem(req, res, respond, id) {
   
   // execute
   try {
-    doc = components.task('remove', id);
+    doc = objects.task('remove', id);
     if(doc && doc.type==='error') {
       doc = utils.errorResponse(req, res, doc.message, doc.code);    
     }
@@ -171,10 +171,10 @@ function sendList(req, res, respond, filter) {
   
   // get data
   if(filter) {
-    list = components.task('filter',filter);
+    list = objects.task('filter',filter);
   }
   else {
-    list = components.task('list');
+    list = objects.task('list');
   }
   
   // update items (fields & links)
@@ -218,7 +218,7 @@ function sendList(req, res, respond, filter) {
   
   // compose graph 
   doc = {};
-  doc.title = "task";
+  doc.title = "ORM Hyper-Tasks";
   doc.actions = coll;
   doc.data =  items;
 
@@ -236,7 +236,7 @@ function sendItem(req, res, id, respond) {
 
   root = '//'+req.headers.host;
 
-  list = components.task('read', id);
+  list = objects.task('read', id);
   if (!list || (Array.isArray(list) && list.length===0)) {
     rtn = utils.errorResponse(req, res, 'File Not Found', 404);
   }
@@ -286,7 +286,7 @@ function sendItem(req, res, id, respond) {
   
     // compose graph
     doc = {};
-    doc.title = "task";
+    doc.title = "ORM Hyper-Tasks";
     doc.actions = coll;
     doc.data = items;
     rtn = {

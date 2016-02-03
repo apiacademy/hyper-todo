@@ -6,10 +6,10 @@
  * Soundtrack : Complete Collection : B.B. King (2008)
  *******************************************************/
 
-// matches storage calls w/ middleware domain-specific verbs
+// matches data calls w/ middleware domain-specific verbs
 
 // access stored data
-var storage = require('./storage.js');
+var data = require('./data.js');
 
 // handle task/todo business objects
 exports.task = function(action, args1, args2, args3) {
@@ -23,13 +23,13 @@ exports.task = function(action, args1, args2, args3) {
 
   switch (action) {
     case 'list':
-      rtn = getList(storage(object, 'list'));
+      rtn = getList(data(object, 'list'));
       break;
     case 'read':
-      rtn = getList(storage(object, 'item', args1));
+      rtn = getList(data(object, 'item', args1));
       break;
     case 'filter':
-      rtn = getList(storage(object, 'filter', args1));
+      rtn = getList(data(object, 'filter', args1));
       break;
     case 'add':
       rtn = addTask(object, args1, props);
@@ -61,7 +61,7 @@ function addTask(elm, task, props) {
     rtn = utils.exception("Missing Title");
   } 
   else {
-    storage(elm, 'add', setProps(item, props));
+    data(elm, 'add', setProps(item, props));
   }
   
   return rtn;
@@ -71,7 +71,7 @@ function addTask(elm, task, props) {
 function updateTask(elm, id, task, props) {
   var rtn, check, item;
   
-  check = storage(elm, 'item', id);
+  check = data(elm, 'item', id);
   if(check===null) {
     rtn = utils.exception("File Not Found", "No record on file", 404);
   }
@@ -88,7 +88,7 @@ function updateTask(elm, id, task, props) {
       rtn = utils.exception("Missing Title");
     } 
     else {
-      storage(elm, 'update', id, setProps(item, props));
+      data(elm, 'update', id, setProps(item, props));
     }
   }
   
@@ -99,12 +99,12 @@ function updateTask(elm, id, task, props) {
 function removeTask(elm, id) {
   var rtn, check;
   
-  check = storage(elm, 'item', id);
+  check = data(elm, 'item', id);
   if(check===null) {
     rtn = utils.exception("File Not Found", "No record on file", 404);
   }
   else {
-    storage(elm, 'remove', id);
+    data(elm, 'remove', id);
   }
   
   return rtn;  
