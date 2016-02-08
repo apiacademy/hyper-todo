@@ -1,6 +1,6 @@
 /*******************************************************
  * task service implementation
- * storage module (server)
+ * data storage (server)
  * May 2015
  * Mike Amundsen (@mamund)
  * Soundtrack : Complete Collection : B.B. King (2008)
@@ -101,7 +101,7 @@ function addItem(object, item, id) {
   item.dateUpdated = item.dateCreated;
 
   if (fs.existsSync(folder + object + '/' + item.id)) {
-    rtn = utils.exception("User", "Record already exists");
+    rtn = utils.exception("Task", "Record already exists");
   } else {
     try {
       fs.writeFileSync(folder + object + '/' + item.id, JSON.stringify(item));

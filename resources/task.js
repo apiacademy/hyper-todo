@@ -1,6 +1,6 @@
 /*******************************************************
  * task service implementation
- * home connector (server)
+ * resorce connector (server)
  * May 2015
  * Mike Amundsen (@mamund)
  * Soundtrack : Complete Collection : B.B. King (2008)

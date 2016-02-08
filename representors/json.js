@@ -18,7 +18,7 @@ function json(object) {
     case "actions":
       delete object[p];
       break;
-    case "todo":
+    case "task":
     default:
       delete object[p].actions;
       if (object[p].data) {

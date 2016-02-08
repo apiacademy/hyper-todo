@@ -1,6 +1,6 @@
 /*******************************************************
  * task service implementation
- * business component (server)
+ * business object(s) (server)
  * May 2015
  * Mike Amundsen (@mamund)
  * Soundtrack : Complete Collection : B.B. King (2008)
